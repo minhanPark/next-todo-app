@@ -1,16 +1,25 @@
 import React from "react";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import TodoList from "../components/TodoList";
 import { TodoType } from "../types/todo";
+import { getTodosApi } from "../lib/api/todo";
 
-const todos: TodoType[] = [
-  { id: 1, text: "넥스트 투두 만들기", color: "red", checked: false },
-  { id: 2, text: "독서 하기", color: "green", checked: true },
-  { id: 3, text: "늦지않게 자기", color: "yellow", checked: false },
-];
+interface IProps {
+  todos: TodoType[];
+}
 
-const app: NextPage = () => {
+const app: NextPage<IProps> = ({ todos }) => {
   return <TodoList todos={todos} />;
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const { data } = await getTodosApi();
+    return { props: { todos: data } };
+  } catch (e) {
+    console.log(e);
+    return { props: { todos: [] } };
+  }
 };
 
 export default app;
