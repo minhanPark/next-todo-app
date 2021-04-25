@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
+import TrashCanIcon from "../public/statics/svg/trash-can.svg";
+import CheckIcon from "../public/statics/svg/check.svg";
 import { TodoType } from "../types/todo";
 
 interface IProps {
@@ -9,6 +11,10 @@ interface IProps {
 
 const Container = styled.div`
   width: 100%;
+
+  .todo-num {
+    margin-left: 12px;
+  }
 
   .todo-list-header {
     padding: 12px;
@@ -59,6 +65,62 @@ const Container = styled.div`
   }
   .bg-yellow {
     background-color: ${palette.yellow};
+  }
+
+  .todo-list {
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 52px;
+      border-bottom: 1px solid ${palette.gray};
+
+      .todo-left-side {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        .todo-color-block {
+          width: 12px;
+          height: 100%;
+        }
+        .checked-todo-text {
+          color: ${palette.gray};
+          text-decoration: line-through;
+        }
+        .todo-text {
+          margin-left: 12px;
+          font-size: 16px;
+        }
+      }
+      .todo-right-side {
+        display: flex;
+        margin-right: 12px;
+        svg {
+          &::first-child {
+            margin-right: 16px;
+          }
+        }
+        .todo-trash-can {
+          margin-right: 16px;
+          path {
+            fill: ${palette.deep_red};
+          }
+        }
+        .todo-check-mark {
+          fill: ${palette.deep_green};
+        }
+        .todo-button {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          border: 1px solid ${palette.gray};
+          background-color: transparent;
+          outline: none;
+        }
+      }
+    }
   }
 `;
 
@@ -121,6 +183,37 @@ const TodoList: React.FC<IProps> = ({ todos }) => {
           ))}
         </div>
       </div>
+      <ul className="todo-list">
+        {todos.map((todo) => (
+          <li className="todo-item" key={todo.id}>
+            <div className="todo-left-side">
+              <div className={`todo-color-block bg-${todo.color}`} />
+              <p
+                className={`todo-text ${
+                  todo.checked ? "checked-todo-text" : ""
+                }`}
+              >
+                {todo.text}
+              </p>
+            </div>
+            <div className="todo-right-side">
+              {todo.checked && (
+                <>
+                  <TrashCanIcon className="todo-trash-can" onClick={() => {}} />
+                  <CheckIcon className="todo-check-mark" onClick={() => {}} />
+                </>
+              )}
+              {!todo.checked && (
+                <button
+                  type="button"
+                  className="todo-button"
+                  onClick={() => {}}
+                ></button>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
     </Container>
   );
 };
