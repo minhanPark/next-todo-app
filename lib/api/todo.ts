@@ -13,3 +13,6 @@ export const checkTodoApi = (id: number) => instance.patch(`/api/todos/${id}`);
 export const addTodoApi = (body: AddTodoApiBody) => {
   instance.post("/api/todos", body);
 };
+
+export const deleteTodoApi = (id: number) =>
+  instance.delete(`/api/todos/${id}`);
